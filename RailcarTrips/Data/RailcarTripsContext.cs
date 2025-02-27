@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RailcarTrips.Models;
+using RailcarTrips.Shared.Models;
 
 namespace RailcarTrips.Data;
 
