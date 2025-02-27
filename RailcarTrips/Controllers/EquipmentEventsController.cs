@@ -1,21 +1,28 @@
-using System.Globalization;
-using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RailcarTrips.Data;
+using RailcarTrips.Services.Interfaces;
 using RailcarTrips.Shared.Models;
 
 namespace RailcarTrips.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EquipmentEventsController(RailcarTripsContext context) : ControllerBase
+public class EquipmentEventsController(IEventProcessingService eventProcessingService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<EquipmentEvent>>> GetEquipmentEvents()
     {
-        return await context.EquipmentEvents.Include(e => e.City).ToListAsync();
+        try
+        {
+            var events = await eventProcessingService.GetEquipmentEventsAsync();
+            return Ok(events);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error in GetEquipmentEvents: {ex.Message}");
+            return StatusCode(500, "An error occurred while retrieving equipment events.");
+        }
     }
+
     
     [HttpPost("upload")]
     public async Task<IActionResult> UploadFile(IFormFile file)
@@ -25,14 +32,15 @@ public class EquipmentEventsController(RailcarTripsContext context) : Controller
         
         try
         {
-            using var reader = new StreamReader(file.OpenReadStream());
-            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-            var records = csv.GetRecords<EquipmentEvent>().ToList();
-
-            context.EquipmentEvents.AddRange(records);
-            await context.SaveChangesAsync();
-
-            return Ok("File uploaded and processed successfully.");
+            try
+            {
+                await eventProcessingService.ProcessEquipmentEventsAsync(file);
+                return Ok("File uploaded and processed successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error processing file: {ex.Message}");
+            }
         }
         catch (Exception ex)
         {

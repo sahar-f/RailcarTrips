@@ -1,9 +1,12 @@
 # RailcarTrips
 ## Pages
-- RailcarTrips - allows you to start trips with 'W' and end with 'Z'
+- RailcarTrips - shows all successful finished trips
 - Trips - displays currently on the sql server
 - Cities - displays currently on the sql server
 - Equipment Events - displays currently on the sql server
+- Trip details - displays all events in order for a trip
+
+- DST does work! (previous assumption fixed)
 
 # Solution Deployed to Azure  
 - WebApp deployment: https://railcartripsclient.azurewebsites.net/ 
@@ -20,14 +23,21 @@
 - Logging!
 - add Azure Logs and app insights
 - authorization and authentication
+- Figure out good solution for daylight savings time changing at different times for different locations.
+- Different functionality for A/D event codes
+- Add data binding
+- Unit testing
+- Pagination instead of loading entire table at once - but have virtualization and @key
+- Print out pending trips somewhere
+- Not print out multiple trips in the same trip details page.
+- Add data binding
+- Sort all the pages and make them look better
 
 # Assumption to Solve Solution
 - There can only be one active trip at a given time per railcar (can't double up)
 - A railcar can make multiple trips overtime, not at the same time
 - Sorting timestamps is required before processing csv file; processed in order after sorting.
-- No room errors within Trips
-- Trip timezone stays in UTC
-- Equipment IDs are unique
+- If a city updates its time zone rule, it will only affect future trip calculations
 
 # Learning Resources
 - https://www.udemy.com/course/blazor-deep-dive-from-beginner-to-advanced/

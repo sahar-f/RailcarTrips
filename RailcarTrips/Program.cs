@@ -3,6 +3,8 @@ using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using RailcarTrips.Components;
 using RailcarTrips.Data;
+using RailcarTrips.Services;
+using RailcarTrips.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,10 @@ builder.Services.AddControllers();  // Enables API controllers
 // {
 //     BaseAddress = new Uri(builder.Configuration["ApiUrl"] ?? "https://localhost:7186") 
 // });
+
+// Services for processing Railcar trips and Equipment events 
+builder.Services.AddScoped<IEventProcessingService, EventProcessingService>();
+builder.Services.AddScoped<ITripProcessingService, TripProcessingService>();
 
 builder.Services.AddCors(options =>
 {

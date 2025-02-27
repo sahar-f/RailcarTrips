@@ -12,7 +12,8 @@ public class CitiesController(RailcarTripsContext context) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<City>>> GetCities()
     {
-        return await context.Cities.ToListAsync();
+        var actionResult = await context.Cities.ToListAsync();
+        return Ok(actionResult);
     }
 
     [HttpPost]

@@ -1,0 +1,54 @@
+@page "/trips/{tripId:int}"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h2>Trip Event Details - In order</h2>
+
+<button class="btn btn-secondary mb-3" @onclick="GoBack">Back to Trips</button>
+
+@if (errorMessage is not null)
+{
+    <p style="color:red;">@errorMessage</p>
+}
+else if (trip == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h3>Trip for Equipment: @trip.EquipmentId</h3>
+    <p><strong>Origin:</strong> @trip.OriginCity?.Name</p>
+    <p><strong>Destination:</strong> @trip.DestinationCity?.Name</p>
+    <p><strong>Start:</strong> @trip.StartUtc</p>
+    <p><strong>End:</strong> @trip.EndUtc</p>
+    <p><strong>Total Hours:</strong> @trip.TotalTripHours</p>
+
+    <h3>Trip Events</h3>
+    <EquipmentEventTable EquipmentEvents="tripEvents" />
+}
+
+@code {
+    [Parameter] public int TripId { get; set; }
+    private Trip? trip;
+    private List<EquipmentEvent> tripEvents = [];
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            trip = await Http.GetFromJsonAsync<Trip>($"api/trips/{TripId}");
+            tripEvents = await Http.GetFromJsonAsync<List<EquipmentEvent>>($"api/trips/{TripId}/events") ?? [];
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading trip details: {ex.Message}";
+            Console.WriteLine($"API Error: {ex.Message}");
+        }
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/trips");
+    }
+}
