@@ -1,4 +1,4 @@
-namespace RailcarTrips.Models;
+namespace RailcarTrips.Shared.Models;
 public class City
 {
     public int Id { get; set; }

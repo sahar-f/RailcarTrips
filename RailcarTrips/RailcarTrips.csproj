@@ -19,6 +19,7 @@
         </PackageReference>
         <ProjectReference Include="..\RailcarTrips.Client\RailcarTrips.Client.csproj"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.13"/>
+        <ProjectReference Include="..\RailcarTrips.Shared\RailcarTrips.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailcarTrips", "RailcarTrip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailcarTrips.Client", "RailcarTrips.Client\RailcarTrips.Client.csproj", "{DD82D5F0-A366-4014-AC58-782636511A81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RailcarTrips.Shared", "RailcarTrips.Shared\RailcarTrips.Shared.csproj", "{88BB3C75-1D0D-4564-9939-11272371B66E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{DD82D5F0-A366-4014-AC58-782636511A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD82D5F0-A366-4014-AC58-782636511A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD82D5F0-A366-4014-AC58-782636511A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88BB3C75-1D0D-4564-9939-11272371B66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BB3C75-1D0D-4564-9939-11272371B66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BB3C75-1D0D-4564-9939-11272371B66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BB3C75-1D0D-4564-9939-11272371B66E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
