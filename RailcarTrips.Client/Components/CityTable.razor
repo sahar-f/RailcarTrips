@@ -1,0 +1,24 @@
+
+@code {
+    [Parameter] public required List<City> Cities { get; set; }
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Time Zone</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var city in Cities)
+    {
+        <tr @key="city.Id">
+            <td>@city.Id</td>
+            <td>@city.Name</td>
+            <td>@city.TimeZone</td>
+        </tr>
+    }
+    </tbody>
+</table>

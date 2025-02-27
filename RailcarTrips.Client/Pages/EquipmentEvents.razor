@@ -1,0 +1,50 @@
+@page "/equipmentevents"
+@inject HttpClient Http
+
+<h2>Equipment Events</h2>
+
+<FileUpload OnFileUploaded="GetEquipmentEvents" />
+<br/>
+
+@if (errorMessage is not null)
+{
+    <p style="color:red;">@errorMessage</p>
+}
+else if (allEvents.Count == 0)
+{
+    <br/>
+    <p>Loading...</p>
+}
+else
+{
+    <EquipmentEventTable EquipmentEvents="allEvents" />
+}
+
+@code {
+    private List<EquipmentEvent> allEvents = [];
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEquipmentEvents();
+    }
+
+    private async Task LoadEquipmentEvents()
+    {
+        try
+        {
+            allEvents = await Http.GetFromJsonAsync<List<EquipmentEvent>>("api/equipmentevents") ?? new List<EquipmentEvent>();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading equipment events: {ex.Message}";
+            Console.WriteLine($"API Error: {ex.Message}");
+        }
+    }
+
+    private async Task GetEquipmentEvents()
+    {
+        await LoadEquipmentEvents();
+        StateHasChanged();
+    }
+}

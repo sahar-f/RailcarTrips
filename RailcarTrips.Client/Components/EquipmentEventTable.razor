@@ -1,0 +1,27 @@
+@code {
+    [Parameter] public required List<EquipmentEvent> EquipmentEvents { get; set; }
+}
+
+<Virtualize Items="EquipmentEvents" Context="evnt">
+<table class="table">
+    <thead>
+    <tr>
+        <th>Equipment ID</th>
+        <th>City</th>
+        <th>Event Code</th>
+        <th>Event Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    @* @foreach (var eventItem in EquipmentEvents) *@
+    @* { *@
+        <tr @key="evnt.Id">
+            <td>@evnt.EquipmentId</td>
+            <td>@evnt.City?.Name</td>
+            <td>@evnt.EventCode</td>
+            <td>@evnt.EventTime.ToLocalTime()</td>
+        </tr>
+    @* } *@
+    </tbody>
+</table>
+</Virtualize>

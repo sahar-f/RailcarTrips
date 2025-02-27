@@ -1,0 +1,43 @@
+@inject HttpClient Http
+
+<p>Upload Equipment Events CSV</p>
+<InputFile OnChange="UploadFile" />
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
+
+@code {
+    private string message = "";
+
+    [Parameter] public EventCallback OnFileUploaded { get; set; }
+
+    private async Task UploadFile(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file.Size == 0)
+        {
+            message = "No file selected.";
+            return;
+        }
+
+        using var content = new MultipartFormDataContent();
+        await using var stream = file.OpenReadStream();
+        var streamContent = new StreamContent(stream);
+        streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+
+        content.Add(streamContent, "file", file.Name);
+
+        var response = await Http.PostAsync("api/equipmentevents/upload", content);
+        if (response.IsSuccessStatusCode)
+        {
+            message = "Upload successful!";
+            await OnFileUploaded.InvokeAsync(); // Refresh equipment events list!
+        }
+        else
+        {
+            message = $"Upload failed. {await response.Content.ReadAsStringAsync()}";
+        }
+    }
+}

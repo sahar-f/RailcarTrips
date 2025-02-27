@@ -1,36 +1,35 @@
-@page "/trips"
-
+@page "/cities"
 @inject HttpClient Http
 
-<h2>Railcar Trips</h2>
+<h2>Cities</h2>
 
 @if (errorMessage is not null)
 {
     <p style="color:red;">@errorMessage</p>
 }
-else if (allTrips.Count == 0)
+else if (allCities.Count == 0)
 {
     <br/>
     <p>Loading...</p>
 }
 else
 {
-    <TripTable Trips="allTrips" />
+    <CityTable Cities="allCities" />
 }
 
 @code {
-    private List<Trip> allTrips = [];
+    private List<City> allCities = [];
     private string? errorMessage;
-
+    
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            allTrips = await Http.GetFromJsonAsync<List<Trip>>("api/trips") ?? []; 
+            allCities = await Http.GetFromJsonAsync<List<City>>("api/cities") ?? new List<City>();
         }
         catch (Exception ex)
         {
-            errorMessage = $"Error loading trips: {ex.Message}";
+            errorMessage = $"Error loading cities: {ex.Message}";
             Console.WriteLine($"API Error: {ex.Message}");
         }
     }
