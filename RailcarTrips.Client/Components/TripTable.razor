@@ -1,0 +1,32 @@
+@using System.Globalization
+
+@code {
+    [Parameter] public required List<Trip> Trips { get; set; }
+}
+<Virtualize Items="Trips" Context="trip">
+<table class="table">
+    <thead>
+    <tr>
+        <th>Equipment ID</th>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Total Hours</th>
+    </tr>
+    </thead>
+    <tbody>
+    @* @foreach (var trip in Trips) *@
+    @* { *@
+        <tr @key="trip.Id">  @*This is optimizing rendering lists when they're being updated*@
+            <td>@trip.EquipmentId</td>
+            <td>@trip.OriginCity?.Name</td>
+            <td>@trip.DestinationCity?.Name</td>
+            <td>@trip.StartUtc.ToLocalTime()</td>
+            <td>@(trip.EndUtc != null ? trip.EndUtc.Value.ToLocalTime().ToString(CultureInfo.InvariantCulture) : "N/A")</td>
+            <td>@trip.TotalTripHours</td>
+        </tr>
+    @* } *@
+    </tbody>
+</table>
+</Virtualize>

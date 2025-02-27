@@ -1,0 +1,37 @@
+@page "/trips"
+@using RailcarTrips.Client.Components
+
+@inject HttpClient Http
+
+<h2>Railcar Trips</h2>
+
+@if (errorMessage is not null)
+{
+    <p style="color:red;">@errorMessage</p>
+}
+else if (allTrips.Count == 0)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <TripTable Trips="allTrips" />
+}
+
+@code {
+    private List<Trip> allTrips = [];
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            allTrips = await Http.GetFromJsonAsync<List<Trip>>("api/trips") ?? []; 
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error loading trips: {ex.Message}";
+            Console.WriteLine($"API Error: {ex.Message}");
+        }
+    }
+}

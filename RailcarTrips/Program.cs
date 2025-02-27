@@ -1,7 +1,6 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
-using RailcarTrips.Client.Pages;
 using RailcarTrips.Components;
 using RailcarTrips.Data;
 
@@ -11,7 +10,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
-// Retrieve Azure Key Vault URI from environment variable or appsettings.json
+builder.Services.AddControllers();  // Enables API controllers
+
+// if there's a need for httpclient
+// // Register HttpClient for Blazor WebAssembly
+// builder.Services.AddScoped(sp => new HttpClient
+// {
+//     BaseAddress = new Uri(builder.Configuration["ApiUrl"] ?? "https://localhost:7186") 
+// });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorClient", policy =>
+    {
+        policy.WithOrigins("https://railcartripsclient.azurewebsites.net/")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+// Retrieve Azure Key Vault URI from appsettings.json
 var keyVaultUri = builder.Configuration["VaultUri"];
 
 if (string.IsNullOrEmpty(keyVaultUri))
@@ -50,6 +68,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseCors("AllowBlazorClient"); 
+app.MapControllers(); // registers API controllers
 
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
