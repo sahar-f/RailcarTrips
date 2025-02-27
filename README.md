@@ -32,12 +32,15 @@
 - Not print out multiple trips in the same trip details page.
 - Add data binding
 - Sort all the pages and make them look better
+- improve encapsulation of fields with sensitive information
+- Show ongoing trips
 
 # Assumption to Solve Solution
 - There can only be one active trip at a given time per railcar (can't double up)
 - A railcar can make multiple trips overtime, not at the same time
 - Sorting timestamps is required before processing csv file; processed in order after sorting.
 - If a city updates its time zone rule, it will only affect future trip calculations
+- Railcar trips page only shows completed trips
 
 # Learning Resources
 - https://www.udemy.com/course/blazor-deep-dive-from-beginner-to-advanced/
